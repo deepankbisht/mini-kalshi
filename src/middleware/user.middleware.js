@@ -1,5 +1,6 @@
-import jwt from "jsonwebtoken"
 import "dotenv/config";
+import jwt from "jsonwebtoken"
+
 
 function authMiddleware(req,res,next){
     try {
@@ -8,7 +9,10 @@ function authMiddleware(req,res,next){
         req.userId = user.userId;
         next();
     } catch (error) {
-        console.log(error,"got it ");
+        return res.status(404).json({
+            success:false,
+            message: error.message
+        })
     }
 }
 
