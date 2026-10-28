@@ -1,12 +1,11 @@
 import "dotenv/config";
 import express from "express";
-import userRouter from "./route/user.route.js";
-
+import router from "./route/index.js";
 
 const app = express();
 app.use(express.json());
 
-app.use("/user",userRouter);
+app.use("/api/v1",router)
 
 app.listen(process.env.PORT,()=>{
     console.log(`Listening to PORT : ${process.env.PORT}`)
