@@ -1,17 +1,17 @@
 import express from "express";
-import { signup, signin , addBalance , createMarket ,applyBets} from "../controller/user.controller.js";
+import { addBalance , waletEvents , profile  , resolveBet} from "../controller/user.controller.js";
 import { authMiddleware } from "../middleware/user.middleware.js";
 
 const userRouter = express.Router();
 
-userRouter.post("/signup",signup);
+//user
+userRouter.get("/profile",authMiddleware,profile);
 
-userRouter.post("/signin",signin);
-
+//balance
 userRouter.post("/onramp", authMiddleware, addBalance);
+userRouter.get("/transactions",authMiddleware,waletEvents);
 
-userRouter.post("/market",authMiddleware, createMarket);
-
-userRouter.post("/bets/:marketId",authMiddleware, applyBets);   
+//market
+userRouter.post("/resolve/:marketId",authMiddleware,resolveBet);
 
 export default userRouter;
