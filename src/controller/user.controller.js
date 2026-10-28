@@ -164,9 +164,25 @@ async function applyBets(req,res){
              [marketId]
         )
 
+        const userBal = await pool.query(
+            `SELECT balance FROM users
+             WHERE "id" =$1 `,
+             [userId]
+        )
+
+        const userBalance = userBal.rows[0].balance;
+
         const amountBet = users.rows.reduce((sum,user)=>{
             return sum+Number(user.betamount);
         },0)
+
+        //check balance of user
+        if(userBalance<betamount){
+            return res.status(401).json({
+                message: "low balance",
+                balance: userBalance
+            })
+        }
         
         const remainingBet = initialAmount - amountBet;
         if(remainingBet<=0){
